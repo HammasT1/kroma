@@ -1,0 +1,6 @@
+.next
+node_modules
+public/shoes
+src/data/generated
+package-lock.json
+Assets
