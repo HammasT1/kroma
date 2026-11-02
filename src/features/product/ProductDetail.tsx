@@ -13,6 +13,7 @@ import { gsap } from "@/lib/gsap";
 import { formatPrice } from "@/lib/format";
 import { useUiStore } from "@/lib/uiStore";
 import { flyToCart } from "./flyToCart";
+import { WishlistButton } from "@/features/wishlist/WishlistButton";
 import { SizePreview } from "./SizePreview";
 import { SizeSelector } from "./SizeSelector";
 import { landShared } from "./sharedElement";
@@ -26,9 +27,34 @@ export function ProductDetail({ shoe, themeIndex }: { shoe: Shoe; themeIndex: nu
   const [size, setSize] = useState<number | null>(null);
   const [invalid, setInvalid] = useState(false);
   const [added, setAdded] = useState(false);
+  const addWrap = useRef<HTMLDivElement>(null);
+  const bar = useRef<HTMLDivElement>(null);
+  const [barOn, setBarOn] = useState(false);
+
+  // sticky bar (phones): show whenever the main add button is off screen
+  useEffect(() => {
+    const el = addWrap.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => setBarOn(!e.isIntersecting), { threshold: 0.2 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const el = bar.current;
+    if (!el) return;
+    gsap.to(el, {
+      yPercent: barOn ? 0 : 110,
+      autoAlpha: barOn ? 1 : 0,
+      duration: prefersReducedMotion() ? 0 : 0.5,
+      ease: barOn ? "power3.out" : "power3.in",
+      overwrite: true,
+    });
+  }, [barOn]);
 
   // hide the real image until the flying clone lands (set before paint)
   useLayoutEffect(() => {
+    if (bar.current) gsap.set(bar.current, { yPercent: 110, autoAlpha: 0 });
     if (slot.current) gsap.set(slot.current, { autoAlpha: 0 });
     gsap.set("[data-pdp-in]", { autoAlpha: 0 });
   }, []);
@@ -99,6 +125,9 @@ export function ProductDetail({ shoe, themeIndex }: { shoe: Shoe; themeIndex: nu
   const onAdd = () => {
     if (size === null) {
       setInvalid(true);
+      document
+        .querySelector("[data-size-field]")
+        ?.scrollIntoView({ behavior: prefersReducedMotion() ? "auto" : "smooth", block: "center" });
       gsap.fromTo(
         "[data-size-field]",
         { x: -8 },
@@ -201,7 +230,7 @@ export function ProductDetail({ shoe, themeIndex }: { shoe: Shoe; themeIndex: nu
             />
           </div>
 
-          <div data-pdp-in className="mt-8 flex items-center gap-4">
+          <div ref={addWrap} data-pdp-in className="mt-8 flex items-center gap-4">
             <Magnetic>
               <button
                 type="button"
@@ -211,6 +240,11 @@ export function ProductDetail({ shoe, themeIndex }: { shoe: Shoe; themeIndex: nu
                 {added ? "Added to bag ✓" : "Add to bag"}
               </button>
             </Magnetic>
+            <WishlistButton
+              shoeId={shoe.id}
+              name={shoe.name}
+              className="relative h-14 w-14 border-2 border-current"
+            />
           </div>
           <p className="sr-only" aria-live="polite">
             {added ? `${shoe.name} size ${size} added to bag` : ""}
@@ -225,6 +259,28 @@ export function ProductDetail({ shoe, themeIndex }: { shoe: Shoe; themeIndex: nu
             <li>Ships in 2 to 4 working days</li>
           </ul>
         </div>
+      </div>
+      <div
+        ref={bar}
+        inert={!barOn}
+        className="bg-bg/95 border-line invisible fixed inset-x-0 bottom-0 z-40 flex items-center gap-3 border-t px-4 py-3 backdrop-blur lg:hidden"
+      >
+        <div className="min-w-0 flex-1">
+          <p className="font-display truncate text-2xl leading-none font-extrabold uppercase">
+            {shoe.name}
+          </p>
+          <p className="text-sm tabular-nums">
+            {formatPrice(shoe.price, shoe.currency)}
+            {size !== null && <span className="text-fg-muted"> · EU {size}</span>}
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={onAdd}
+          className="bg-accent text-on-accent h-12 shrink-0 rounded-full px-6 text-sm font-bold tracking-[0.12em] uppercase"
+        >
+          {added ? "Added ✓" : size === null ? "Select size" : "Add to bag"}
+        </button>
       </div>
     </section>
   );

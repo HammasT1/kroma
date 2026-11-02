@@ -174,3 +174,12 @@ html.has-cursor * {
     display: none !important;
   }
 }
+
+/* Reflective floor under the hero shoe (Chromium/Safari; others simply skip it) */
+@media (min-width: 640px) {
+  @supports (-webkit-box-reflect: below 0) {
+    .shoe-reflect {
+      -webkit-box-reflect: below -6px linear-gradient(transparent 58%, rgba(255, 255, 255, 0.16));
+    }
+  }
+}

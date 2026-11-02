@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 import type { Metadata, Viewport } from "next";
 import { Big_Shoulders, Familjen_Grotesk } from "next/font/google";
 import { productRepository } from "@/data";
+import { SearchMount } from "@/features/search/SearchMount";
+import { StoreHydrator } from "@/lib/StoreHydrator";
 import { Nav } from "@/components/ui/Nav";
 import { Preloader } from "@/components/ui/Preloader";
 import { SmoothScroll } from "@/components/ui/SmoothScroll";
@@ -42,6 +44,18 @@ export const viewport: Viewport = { themeColor: "#d9d4cc", width: "device-width"
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const shoes = await productRepository.list();
   const palettes = shoes.map((s) => s.palette);
+  const searchItems = shoes.map((s) => ({
+    slug: s.slug,
+    name: s.name,
+    category: s.category,
+    colorway: s.colorway,
+    price: s.price,
+    currency: s.currency,
+    bg: s.palette.bg,
+    text: s.palette.text,
+    img: s.image.src,
+    aspect: s.image.aspect,
+  }));
   return (
     <html lang="en" className={`${display.variable} ${body.variable}`}>
       <head>
@@ -66,6 +80,8 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
             <Nav />
             {children}
             <CartDrawerMount />
+            <SearchMount items={searchItems} />
+            <StoreHydrator />
             <Preloader />
           </MotionProvider>
         </ThemeProvider>

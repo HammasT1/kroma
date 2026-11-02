@@ -7,6 +7,7 @@ import { TransitionLink } from "@/components/ui/TransitionLink";
 import { ShoeImage } from "@/features/hero/HeroShoe";
 import { useCartStore } from "@/features/cart/cartStore";
 import { flyToCart } from "@/features/product/flyToCart";
+import { WishlistButton } from "@/features/wishlist/WishlistButton";
 import { contrast } from "@/lib/color";
 import { formatPrice } from "@/lib/format";
 
@@ -56,7 +57,7 @@ export function ProductCard({ shoe, priority = false }: { shoe: Shoe; priority?:
         >
           <span
             aria-hidden
-            className="font-display absolute top-3 left-4 text-6xl leading-none font-black opacity-20"
+            className="font-display absolute bottom-2 left-4 text-6xl leading-none font-black opacity-20"
           >
             {String(shoe.id).padStart(2, "0")}
           </span>
@@ -83,12 +84,20 @@ export function ProductCard({ shoe, priority = false }: { shoe: Shoe; priority?:
         </p>
       </TransitionLink>
 
+      <WishlistButton
+        shoeId={shoe.id}
+        name={shoe.name}
+        color={shoe.palette.text}
+        fill={shoe.palette.accent}
+        className="absolute top-2 right-2 z-10"
+      />
+
       <button
         type="button"
         onClick={() => setPicking((v) => !v)}
         aria-expanded={picking}
         aria-label={`Quick add ${shoe.name}`}
-        className="absolute top-3 right-3 z-10 flex h-10 items-center gap-1 rounded-full px-4 text-xs font-bold tracking-wider uppercase opacity-100 transition-[opacity,transform] duration-300 [@media(hover:hover)]:translate-y-1 [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-focus-within:translate-y-0 [@media(hover:hover)]:group-focus-within:opacity-100 [@media(hover:hover)]:group-hover:translate-y-0 [@media(hover:hover)]:group-hover:opacity-100"
+        className="absolute top-3 left-3 z-10 flex h-10 items-center gap-1 rounded-full px-4 text-xs font-bold tracking-wider uppercase opacity-100 transition-[opacity,transform] duration-300 [@media(hover:hover)]:translate-y-1 [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-focus-within:translate-y-0 [@media(hover:hover)]:group-focus-within:opacity-100 [@media(hover:hover)]:group-hover:translate-y-0 [@media(hover:hover)]:group-hover:opacity-100"
         style={{ background: shoe.palette.accent, color: contrastInk(shoe.palette.accent) }}
       >
         + Quick add

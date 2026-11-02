@@ -5,12 +5,18 @@ import { useMemo, useState } from "react";
 import type { Shoe, ShoeCategory } from "@/data";
 import { ProductCard } from "./ProductCard";
 
+type Sort = "featured" | "price-asc" | "price-desc" | "name";
+
 export function ProductGrid({ shoes, categories }: { shoes: Shoe[]; categories: ShoeCategory[] }) {
   const [filter, setFilter] = useState<ShoeCategory | "All">("All");
-  const visible = useMemo(
-    () => (filter === "All" ? shoes : shoes.filter((s) => s.category === filter)),
-    [shoes, filter],
-  );
+  const [sort, setSort] = useState<Sort>("featured");
+  const visible = useMemo(() => {
+    const list = filter === "All" ? [...shoes] : shoes.filter((s) => s.category === filter);
+    if (sort === "price-asc") list.sort((a, b) => a.price - b.price);
+    if (sort === "price-desc") list.sort((a, b) => b.price - a.price);
+    if (sort === "name") list.sort((a, b) => a.name.localeCompare(b.name));
+    return list;
+  }, [shoes, filter, sort]);
 
   return (
     <section
@@ -37,6 +43,19 @@ export function ProductGrid({ shoes, categories }: { shoes: Shoe[]; categories: 
               {c}
             </button>
           ))}
+          <label className="relative">
+            <span className="sr-only">Sort pairs</span>
+            <select
+              value={sort}
+              onChange={(e) => setSort(e.target.value as Sort)}
+              className="border-accent bg-bg h-10 cursor-pointer rounded-full border-2 pr-9 pl-4 text-xs font-bold tracking-wider uppercase"
+            >
+              <option value="featured">Featured</option>
+              <option value="price-asc">Price: low to high</option>
+              <option value="price-desc">Price: high to low</option>
+              <option value="name">Name: A to Z</option>
+            </select>
+          </label>
         </div>
       </div>
 

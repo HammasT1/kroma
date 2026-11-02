@@ -48,6 +48,14 @@ src/lib/            gsap (single plugin registration), lenis, color (WCAG), them
 - **Env.** `src/lib/env.ts` validates `NEXT_PUBLIC_SITE_URL` / `NEXT_PUBLIC_SITE_NAME` (see `.env.example`). Add server secrets there when a backend arrives.
 - **Cart.** Zustand + localStorage (hydrated after mount). Checkout is a stub: it validates a form, clears the bag and shows a demo confirmation. No payment or data leaves the browser.
 
+## Storefront features
+
+- **Wishlist:** heart on cards and product pages (`features/wishlist`), saved in localStorage, listed at `/wishlist`.
+- **Search and sort:** press `/` or Ctrl/Cmd+K for the command-style search (`features/search`, lazy-loaded); the grid sorts by price or name.
+- **Sticky add-to-bag bar:** phones only, shows when the main button scrolls out of view.
+- **Reflective floor:** `-webkit-box-reflect` under the hero shoe (Chromium/Safari, tablet width and up).
+- **Content pages:** `/about`, `/faq`, `/shipping`, all built on `components/ui/PageShell`.
+
 ## Accessibility and motion
 
 `prefers-reduced-motion` turns off Lenis, pinned animation timing, tilt, magnetic pull, the cursor and the color wipe; navigation still works with buttons and arrow keys. Keyboard: arrow keys drive the hero, radios for sizes, focus trap + Esc in the bag, skip link. axe (WCAG 2.1 AA) reports no violations on home, product, drawer and checkout.

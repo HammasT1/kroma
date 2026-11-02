@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import { Magnetic } from "@/components/ui/Magnetic";
 import { useUiStore } from "@/lib/uiStore";
 import { selectCount, useCartStore } from "./cartStore";
@@ -8,10 +7,6 @@ import { selectCount, useCartStore } from "./cartStore";
 export function CartButton() {
   const count = useCartStore(selectCount);
   const setCartOpen = useUiStore((s) => s.setCartOpen);
-
-  useEffect(() => {
-    void useCartStore.persist.rehydrate();
-  }, []);
 
   return (
     <Magnetic>

@@ -312,6 +312,7 @@ export function Showcase({ shoes }: { shoes: Shoe[] }) {
                     style={i === 0 ? undefined : { opacity: 0, visibility: "hidden" }}
                   >
                     <div
+                      className="shoe-reflect"
                       style={{
                         width: `min(88vw, calc(var(--stack-h) * ${s.image.aspect}), 980px)`,
                       }}

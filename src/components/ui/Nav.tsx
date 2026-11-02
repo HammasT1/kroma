@@ -1,5 +1,7 @@
 import { env } from "@/lib/env";
 import { CartButton } from "@/features/cart/CartButton";
+import { SearchButton } from "@/features/search/SearchButton";
+import { WishlistLink } from "@/features/wishlist/WishlistLink";
 import { TransitionLink } from "./TransitionLink";
 
 export function Nav() {
@@ -11,13 +13,15 @@ export function Nav() {
       >
         {env.NEXT_PUBLIC_SITE_NAME}
       </TransitionLink>
-      <nav aria-label="Primary" className="pointer-events-auto flex items-center gap-2 sm:gap-6">
+      <nav aria-label="Primary" className="pointer-events-auto flex items-center gap-1 sm:gap-4">
         <TransitionLink
           href="/#collection"
           className="hidden px-2 text-sm font-medium tracking-wide uppercase sm:block"
         >
           Collection
         </TransitionLink>
+        <SearchButton />
+        <WishlistLink />
         <CartButton />
       </nav>
     </header>
