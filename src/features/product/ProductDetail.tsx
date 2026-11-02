@@ -13,6 +13,7 @@ import { gsap } from "@/lib/gsap";
 import { formatPrice } from "@/lib/format";
 import { useUiStore } from "@/lib/uiStore";
 import { flyToCart } from "./flyToCart";
+import { SizePreview } from "./SizePreview";
 import { SizeSelector } from "./SizeSelector";
 import { landShared } from "./sharedElement";
 
@@ -157,16 +158,18 @@ export function ProductDetail({ shoe, themeIndex }: { shoe: Shoe; themeIndex: nu
               <div
                 ref={slot}
                 data-shared-target
-                className="mx-auto will-change-transform"
+                className="relative mx-auto will-change-transform"
                 style={{ width: `min(92vw, calc(var(--stage-h) * ${shoe.image.aspect}), 780px)` }}
               >
-                <ShoeImage
-                  shoe={shoe}
-                  priority
-                  preload
-                  sizes="(min-width: 1024px) 55vw, 92vw"
-                  className="block h-auto w-full"
-                />
+                <SizePreview size={size} sizes={shoe.sizes}>
+                  <ShoeImage
+                    shoe={shoe}
+                    priority
+                    preload
+                    sizes="(min-width: 1024px) 55vw, 92vw"
+                    className="block h-auto w-full"
+                  />
+                </SizePreview>
               </div>
             </div>
           </TiltCard>

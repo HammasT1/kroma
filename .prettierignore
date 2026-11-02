@@ -4,3 +4,4 @@ public/shoes
 src/data/generated
 package-lock.json
 Assets
+.next-test

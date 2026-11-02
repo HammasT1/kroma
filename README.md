@@ -35,7 +35,7 @@ src/features/
   theme/            themeStore + useShoeTheme (CSS-variable tweening), ColorWipe, Cursor, NoiseOverlay
   catalog/          HorizontalGallery (velocity skew), ProductGrid, ProductCard (+ quick add)
   product/          ProductDetail, SizeSelector, RelatedRow, sharedElement (FLIP flight), flyToCart
-  cart/             cartStore (persisted), CartDrawer, CheckoutStub
+  cart/             cartStore (persisted), CartDrawer, CheckoutFlow
 src/components/ui/  Magnetic, TiltCard, Reveal, Preloader, SmoothScroll, TransitionLink, Nav, Footer
 src/hooks/          useGsapTimeline, useReducedMotion
 src/lib/            gsap (single plugin registration), lenis, color (WCAG), theme, seo, env, format

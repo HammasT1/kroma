@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { CheckoutStub } from "@/features/cart/CheckoutStub";
+import { CheckoutFlow } from "@/features/checkout/CheckoutFlow";
 
 export const metadata: Metadata = {
   title: "Checkout",
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function CheckoutPage() {
   return (
     <main id="main" className="relative z-10 px-4 pt-28 pb-24 sm:px-8">
-      <CheckoutStub />
+      <CheckoutFlow />
     </main>
   );
 }

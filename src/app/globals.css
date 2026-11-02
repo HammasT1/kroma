@@ -132,3 +132,45 @@ html.has-cursor * {
     opacity: 0;
   }
 }
+
+/* Order slip: torn bottom edge + print layout */
+.slip-teeth {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -9px;
+  height: 10px;
+  background:
+    linear-gradient(135deg, #fff 5px, transparent 0) 0 0 / 10px 10px repeat-x,
+    linear-gradient(225deg, #fff 5px, transparent 0) 0 0 / 10px 10px repeat-x;
+}
+
+@keyframes pay-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+  #slip-paper,
+  #slip-paper * {
+    visibility: visible !important;
+  }
+  #slip-paper {
+    position: absolute !important;
+    inset: 0 auto auto 0 !important;
+    width: 100% !important;
+    max-width: 420px;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
