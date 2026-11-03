@@ -29,9 +29,9 @@ const perks = [
 ] as const;
 
 const socials = [
-  ["Instagram", "https://www.instagram.com"],
-  ["TikTok", "https://www.tiktok.com"],
-  ["YouTube", "https://www.youtube.com"],
+  ["Instagram", "https://www.instagram.com/flutter.by.hammas/"],
+  ["TikTok", "https://www.tiktok.com/@flutterbyhammas"],
+  ["YouTube", "https://www.youtube.com/@flutterwithhammas"],
 ] as const;
 
 export function Footer() {
