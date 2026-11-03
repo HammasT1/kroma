@@ -2,12 +2,12 @@
 
 /* Theme variables are written to <html> by the layout and tweened by GSAP (useShoeTheme). */
 :root {
-  --bg: #d9d4cc;
-  --bg-dark: #2a2723;
-  --accent: #111111;
-  --fg: #141311;
+  --bg: #0e0e10;
+  --bg-dark: #060607;
+  --accent: #d4b27a;
+  --fg: #f3eee6;
   --on-dark: #ffffff;
-  --on-accent: #ffffff;
+  --on-accent: #0e0e0e;
 }
 
 @theme inline {

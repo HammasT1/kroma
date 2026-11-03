@@ -1,4 +1,5 @@
 import { env } from "@/lib/env";
+import { Newsletter } from "./Newsletter";
 import { TransitionLink } from "./TransitionLink";
 
 const columns = [
@@ -8,6 +9,7 @@ const columns = [
       ["Collection", "/#collection"],
       ["All pairs", "/#shop"],
       ["Wishlist", "/wishlist"],
+      ["Bag & checkout", "/checkout"],
     ],
   },
   {
@@ -15,40 +17,98 @@ const columns = [
     links: [
       ["FAQ", "/faq"],
       ["Shipping & returns", "/shipping"],
-      ["Checkout", "/checkout"],
     ],
   },
-  { title: "KROMA", links: [["About", "/about"]] },
+  { title: "Company", links: [["About", "/about"]] },
+] as const;
+
+const perks = [
+  ["Complimentary shipping", "On every order over $150"],
+  ["30-day returns", "Try them on, send them back free"],
+  ["Secure payment", "Cards, wallets and cash on delivery"],
+] as const;
+
+const socials = [
+  ["Instagram", "https://www.instagram.com"],
+  ["TikTok", "https://www.tiktok.com"],
+  ["YouTube", "https://www.youtube.com"],
 ] as const;
 
 export function Footer() {
+  const name = env.NEXT_PUBLIC_SITE_NAME;
   return (
-    <footer className="border-line relative z-10 border-t px-4 py-16 sm:px-8">
-      <div className="grid gap-10 sm:grid-cols-[2fr_1fr_1fr_1fr]">
-        <p className="font-display text-[18vw] leading-[0.8] font-black uppercase sm:text-[9vw]">
-          {env.NEXT_PUBLIC_SITE_NAME}
-        </p>
-        {columns.map((c) => (
-          <nav key={c.title} aria-label={c.title}>
-            <h2 className="text-xs font-bold tracking-[0.25em] uppercase">{c.title}</h2>
-            <ul className="mt-4 grid gap-2">
-              {c.links.map(([label, href]) => (
+    <footer className="bg-bg-dark text-on-dark relative z-10 mt-12">
+      <div className="border-b border-white/10">
+        <ul className="mx-auto grid max-w-[1600px] gap-8 px-4 py-10 sm:grid-cols-3 sm:px-8">
+          {perks.map(([title, text]) => (
+            <li key={title}>
+              <p className="text-accent text-xs font-bold tracking-[0.22em] uppercase">{title}</p>
+              <p className="mt-2 text-sm text-white/70">{text}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="mx-auto grid max-w-[1600px] gap-12 px-4 py-16 sm:px-8 lg:grid-cols-[1.4fr_2fr]">
+        <div>
+          <p className="font-display text-5xl font-black tracking-[0.2em] uppercase">{name}</p>
+          <p className="mt-5 max-w-sm text-sm leading-relaxed text-white/70">
+            Considered footwear, made to be worn. Join the list for early access to new pairs and
+            private releases.
+          </p>
+          <div className="mt-8 text-white">
+            <Newsletter />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-10 sm:grid-cols-3">
+          {columns.map((c) => (
+            <nav key={c.title} aria-label={c.title}>
+              <h2 className="text-accent text-xs font-bold tracking-[0.25em] uppercase">
+                {c.title}
+              </h2>
+              <ul className="mt-5 grid gap-3">
+                {c.links.map(([label, href]) => (
+                  <li key={label}>
+                    <TransitionLink
+                      href={href}
+                      className="text-sm text-white/70 transition-colors hover:text-white"
+                    >
+                      {label}
+                    </TransitionLink>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))}
+          <nav aria-label="Social" className="col-span-2 sm:col-span-3">
+            <h2 className="text-accent text-xs font-bold tracking-[0.25em] uppercase">Follow</h2>
+            <ul className="mt-5 flex flex-wrap gap-x-6 gap-y-3">
+              {socials.map(([label, href]) => (
                 <li key={label}>
-                  <TransitionLink
+                  <a
                     href={href}
-                    className="text-fg-muted hover:text-fg underline-offset-4 hover:underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-white/70 transition-colors hover:text-white"
                   >
                     {label}
-                  </TransitionLink>
+                  </a>
                 </li>
               ))}
             </ul>
           </nav>
-        ))}
+        </div>
       </div>
-      <p className="text-fg-muted mt-12 text-sm">
-        Demo storefront. All product names are fictional.
-      </p>
+
+      <div className="border-t border-white/10">
+        <div className="mx-auto flex max-w-[1600px] flex-col gap-3 px-4 py-6 text-xs text-white/60 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+          <p>
+            © {new Date().getFullYear()} {name}. Demo storefront, all product names are fictional.
+          </p>
+          <p className="tracking-[0.18em] uppercase">Visa · Mastercard · Apple Pay · COD</p>
+        </div>
+      </div>
     </footer>
   );
 }

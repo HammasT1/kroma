@@ -4,6 +4,7 @@ import { Big_Shoulders, Familjen_Grotesk } from "next/font/google";
 import { productRepository } from "@/data";
 import { SearchMount } from "@/features/search/SearchMount";
 import { StoreHydrator } from "@/lib/StoreHydrator";
+import { Footer } from "@/components/ui/Footer";
 import { Nav } from "@/components/ui/Nav";
 import { Preloader } from "@/components/ui/Preloader";
 import { SmoothScroll } from "@/components/ui/SmoothScroll";
@@ -39,7 +40,7 @@ export const metadata: Metadata = {
   description: "Eleven pairs, eleven moods. A color-reactive sneaker showcase.",
 };
 
-export const viewport: Viewport = { themeColor: "#d9d4cc", width: "device-width", initialScale: 1 };
+export const viewport: Viewport = { themeColor: "#0e0e10", width: "device-width", initialScale: 1 };
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const shoes = await productRepository.list();
@@ -79,6 +80,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
             </a>
             <Nav />
             {children}
+            <Footer />
             <CartDrawerMount />
             <SearchMount items={searchItems} />
             <StoreHydrator />

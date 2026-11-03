@@ -8,15 +8,15 @@ import type { Palette } from "./types";
  * (see `suggestedPalette` in src/data/generated/shoes.assets.json).
  */
 export const palettes: Record<number, Palette> = {
-  1: { bg: "#D9D4CC", bgDark: "#2A2723", accent: "#111111", text: "#141311" },
-  2: { bg: "#0F6E86", bgDark: "#08414F", accent: "#F4B83C", text: "#FFFFFF" },
-  3: { bg: "#B9CADB", bgDark: "#2F4A66", accent: "#1E3A5F", text: "#0E1A2B" },
-  4: { bg: "#C8202E", bgDark: "#6E0F18", accent: "#FFFFFF", text: "#FFFFFF" },
-  5: { bg: "#D8A869", bgDark: "#5E3D1A", accent: "#3B2410", text: "#2A1A0A" },
-  6: { bg: "#EDEAE4", bgDark: "#3A3732", accent: "#C41E1A", text: "#121212" },
-  7: { bg: "#9CC6F0", bgDark: "#1F4A85", accent: "#0B1F3B", text: "#0B1F3B" },
-  8: { bg: "#1B1612", bgDark: "#0A0806", accent: "#E9B77A", text: "#F5E9D8" },
-  9: { bg: "#CFCFCF", bgDark: "#2E2E2E", accent: "#C2410C", text: "#111111" },
-  10: { bg: "#1E3FC4", bgDark: "#0F2178", accent: "#E7B46A", text: "#FFFFFF" },
-  11: { bg: "#4A2E22", bgDark: "#1E110B", accent: "#E5A98A", text: "#F6EBE3" },
+  1: { bg: "#0E0E10", bgDark: "#060607", accent: "#D4B27A", text: "#F3EEE6" }, // obsidian
+  2: { bg: "#0B1A26", bgDark: "#050E16", accent: "#D4B27A", text: "#F1EEE8" }, // deep teal-navy
+  3: { bg: "#14181F", bgDark: "#0A0C10", accent: "#C9CFD8", text: "#EEF0F3" }, // graphite, platinum
+  4: { bg: "#2A1015", bgDark: "#14070A", accent: "#E0B48A", text: "#F6ECE4" }, // oxblood
+  5: { bg: "#21170F", bgDark: "#0F0A06", accent: "#D9B27C", text: "#F4EADD" }, // espresso
+  6: { bg: "#18181B", bgDark: "#09090B", accent: "#D4B27A", text: "#F4F1EC" }, // charcoal
+  7: { bg: "#0D1C30", bgDark: "#060E1A", accent: "#C9CFD8", text: "#EDF1F6" }, // midnight blue
+  8: { bg: "#13110E", bgDark: "#080706", accent: "#E0BE86", text: "#F5E9D8" }, // warm black
+  9: { bg: "#1A1C1F", bgDark: "#0B0C0D", accent: "#D9A57A", text: "#F1EFEB" }, // slate, copper
+  10: { bg: "#10173F", bgDark: "#070B24", accent: "#D4B27A", text: "#F0EFF6" }, // royal indigo
+  11: { bg: "#261914", bgDark: "#120B08", accent: "#E2AE92", text: "#F6EBE3" }, // mocha, rose gold
 };
