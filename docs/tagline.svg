@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="44" viewBox="0 0 900 44" role="img" aria-label="Animation-first. Premium dark theme. Built to sell.">
+  <style>
+    text { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 22px; letter-spacing: 6px; text-anchor: middle; fill: #d4b27a; opacity: 0; }
+    .a { animation: show 9s infinite; }
+    .b { animation: show 9s infinite 3s; }
+    .c { animation: show 9s infinite 6s; }
+    @keyframes show { 0% { opacity: 0; transform: translateY(8px); } 6%, 30% { opacity: 1; transform: none; } 36%, 100% { opacity: 0; transform: translateY(-8px); } }
+  </style>
+  <text class="a" x="450" y="30">ANIMATION-FIRST</text>
+  <text class="b" x="450" y="30">PREMIUM DARK THEME</text>
+  <text class="c" x="450" y="30">BUILT TO SELL</text>
+</svg>
