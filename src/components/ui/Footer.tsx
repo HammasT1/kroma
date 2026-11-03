@@ -1,4 +1,5 @@
 import { env } from "@/lib/env";
+import { SITE, whatsappLink } from "@/lib/site";
 import { Newsletter } from "./Newsletter";
 import { TransitionLink } from "./TransitionLink";
 
@@ -19,7 +20,15 @@ const columns = [
       ["Shipping & returns", "/shipping"],
     ],
   },
-  { title: "Company", links: [["About", "/about"]] },
+  {
+    title: "Company",
+    links: [
+      ["About", "/about"],
+      ["Privacy policy", "/privacy"],
+      ["Terms of service", "/terms"],
+      ["Refund policy", "/refund-policy"],
+    ],
+  },
 ] as const;
 
 const perks = [
@@ -29,9 +38,9 @@ const perks = [
 ] as const;
 
 const socials = [
-  ["Instagram", "https://www.instagram.com/flutter.by.hammas/"],
-  ["TikTok", "https://www.tiktok.com/@flutterbyhammas"],
-  ["YouTube", "https://www.youtube.com/@flutterwithhammas"],
+  ["Instagram", SITE.social.instagram],
+  ["TikTok", SITE.social.tiktok],
+  ["YouTube", SITE.social.youtube],
 ] as const;
 
 export function Footer() {
@@ -59,6 +68,21 @@ export function Footer() {
           <div className="mt-8 text-white">
             <Newsletter />
           </div>
+          <address className="mt-10 grid gap-2 text-sm text-white/70 not-italic">
+            <p className="text-accent text-xs font-bold tracking-[0.25em] uppercase">Contact</p>
+            <a href={`mailto:${SITE.email}`} className="w-fit hover:text-white">
+              {SITE.email}
+            </a>
+            <a
+              href={whatsappLink()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-fit hover:text-white"
+            >
+              WhatsApp {SITE.whatsappDisplay}
+            </a>
+            <p>{SITE.address}</p>
+          </address>
         </div>
 
         <div className="grid grid-cols-2 gap-10 sm:grid-cols-3">

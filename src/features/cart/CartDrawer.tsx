@@ -7,6 +7,7 @@ import { TransitionLink } from "@/components/ui/TransitionLink";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { getLenis } from "@/lib/lenis";
 import { formatPrice } from "@/lib/format";
+import { SITE } from "@/lib/site";
 import { useUiStore } from "@/lib/uiStore";
 import { MAX_QTY, selectCount, selectSubtotal, useCartStore, type CartLine } from "./cartStore";
 
@@ -131,6 +132,7 @@ export function CartDrawer() {
 
             {lines.length > 0 && (
               <footer className="border-t border-white/15 px-5 py-5">
+                <FreeShippingBar subtotal={subtotal} currency={lines[0].currency} />
                 <p className="flex items-baseline justify-between text-lg">
                   <span>Subtotal</span>
                   <strong className="font-display text-4xl tabular-nums">
@@ -151,6 +153,37 @@ export function CartDrawer() {
         </div>
       )}
     </AnimatePresence>
+  );
+}
+
+function FreeShippingBar({ subtotal, currency }: { subtotal: number; currency: string }) {
+  const left = SITE.freeShippingOver - subtotal;
+  const pct = Math.min(100, (subtotal / SITE.freeShippingOver) * 100);
+  return (
+    <div className="mb-5">
+      <p className="text-sm" aria-live="polite">
+        {left > 0 ? (
+          <>
+            You are <strong>{formatPrice(left, currency)}</strong> away from free shipping.
+          </>
+        ) : (
+          <strong>You have unlocked free shipping.</strong>
+        )}
+      </p>
+      <div
+        role="progressbar"
+        aria-label="Progress to free shipping"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={Math.round(pct)}
+        className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/15"
+      >
+        <div
+          className="bg-accent h-full origin-left rounded-full transition-transform duration-500"
+          style={{ transform: `scaleX(${pct / 100})`, width: "100%" }}
+        />
+      </div>
+    </div>
   );
 }
 

@@ -8,11 +8,12 @@ import { selectSubtotal, useCartStore } from "@/features/cart/cartStore";
 import { useCartHydrated } from "@/features/cart/useCartHydrated";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { formatPrice } from "@/lib/format";
+import { SITE } from "@/lib/site";
 import { PaymentDeck } from "./PaymentDeck";
 import { Slip } from "./Slip";
 import type { Details, Order, PaidInfo } from "./types";
 
-const FREE_SHIPPING_OVER = 15000;
+const FREE_SHIPPING_OVER = SITE.freeShippingOver;
 const SHIPPING = 900;
 const STEPS = ["Delivery", "Payment", "Slip"] as const;
 type Step = (typeof STEPS)[number];

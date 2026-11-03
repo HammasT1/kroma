@@ -10,6 +10,7 @@ import { useUiStore } from "@/lib/uiStore";
 const MIN_MS = 900;
 const SOFT_CAP_MS = 2200;
 const MAX_MS = 9000;
+const SEEN_KEY = "kroma-intro-seen";
 
 /** Counter + wordmark intro. Counts real image decodes (every <img data-preload>), then lifts like a curtain. */
 export function Preloader() {
@@ -18,6 +19,14 @@ export function Preloader() {
   const [gone, setGone] = useState(false);
 
   useEffect(() => {
+    // Repeat visit in this tab: skip the intro entirely.
+    try {
+      if (sessionStorage.getItem(SEEN_KEY)) {
+        if (panel.current) panel.current.style.display = "none";
+        useUiStore.getState().setReady(true);
+        return;
+      }
+    } catch {}
     const root = document.documentElement;
     root.style.overflow = "hidden";
     const reduced = prefersReducedMotion();
@@ -39,6 +48,9 @@ export function Preloader() {
         const tl = gsap.timeline({
           onComplete: () => {
             root.style.overflow = "";
+            try {
+              sessionStorage.setItem(SEEN_KEY, "1");
+            } catch {}
             setGone(true);
           },
         });

@@ -12,11 +12,24 @@ import { useShoeTheme } from "@/features/theme/useShoeTheme";
 import { gsap } from "@/lib/gsap";
 import { formatPrice } from "@/lib/format";
 import { useUiStore } from "@/lib/uiStore";
+import { whatsappLink } from "@/lib/site";
 import { flyToCart } from "./flyToCart";
 import { WishlistButton } from "@/features/wishlist/WishlistButton";
 import { SizePreview } from "./SizePreview";
 import { SizeSelector } from "./SizeSelector";
 import { landShared } from "./sharedElement";
+
+const TRUST = [
+  [
+    "Secure payment",
+    "M12 3 4.5 6v5.5c0 4.4 3.1 8 7.5 9.5 4.4-1.5 7.5-5.1 7.5-9.5V6L12 3Zm-3 9 2.2 2.2L15 10",
+  ],
+  [
+    "Free shipping over $150",
+    "M3 7h11v9H3zM14 10h4l3 3v3h-7M7 19a1.5 1.5 0 1 0 0-.01M17 19a1.5 1.5 0 1 0 0-.01",
+  ],
+  ["30-day returns", "M4 12a8 8 0 1 0 2.5-5.8M4 4v4h4"],
+] as const;
 
 export function ProductDetail({ shoe, themeIndex }: { shoe: Shoe; themeIndex: number }) {
   const root = useRef<HTMLElement>(null);
@@ -151,6 +164,7 @@ export function ProductDetail({ shoe, themeIndex }: { shoe: Shoe; themeIndex: nu
     setTimeout(() => setAdded(false), 1800);
   };
 
+  const inStockCount = shoe.sizes.filter((s) => !shoe.soldOut.includes(s)).length;
   const [first, ...rest] = shoe.name.toUpperCase().split(" ");
 
   return (
@@ -217,6 +231,16 @@ export function ProductDetail({ shoe, themeIndex }: { shoe: Shoe; themeIndex: nu
           <p data-pdp-in className="mt-4 text-3xl font-semibold tabular-nums">
             {formatPrice(shoe.price, shoe.currency)}
           </p>
+          {inStockCount > 0 && inStockCount <= 3 && (
+            <p data-pdp-in className="text-accent mt-3 text-sm font-semibold">
+              Low stock: only {inStockCount} {inStockCount === 1 ? "size" : "sizes"} left
+            </p>
+          )}
+          {inStockCount === 0 && (
+            <p data-pdp-in className="text-accent mt-3 text-sm font-semibold">
+              Sold out in every size
+            </p>
+          )}
           <p data-pdp-in className="text-fg-muted mt-4 max-w-md text-base leading-relaxed">
             {shoe.description}
           </p>
@@ -252,12 +276,40 @@ export function ProductDetail({ shoe, themeIndex }: { shoe: Shoe; themeIndex: nu
 
           <ul
             data-pdp-in
-            className="border-line text-fg-muted mt-10 grid max-w-md gap-2 border-t pt-6 text-sm"
+            className="border-line mt-10 grid max-w-md grid-cols-3 gap-3 border-t pt-6 text-center text-[11px] leading-snug font-semibold tracking-wide uppercase"
           >
-            <li>Free shipping over $150</li>
-            <li>30-day returns, no questions</li>
-            <li>Ships in 2 to 4 working days</li>
+            {TRUST.map(([label, path]) => (
+              <li key={label} className="grid justify-items-center gap-2">
+                <svg
+                  viewBox="0 0 24 24"
+                  width="26"
+                  height="26"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="text-accent"
+                  aria-hidden
+                >
+                  <path d={path} />
+                </svg>
+                {label}
+              </li>
+            ))}
           </ul>
+          <p data-pdp-in className="text-fg-muted mt-5 max-w-md text-sm">
+            Ships in 2 to 4 working days. Questions?{" "}
+            <a
+              href={whatsappLink(`Hi! I have a question about the ${shoe.name}.`)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-fg underline underline-offset-4"
+            >
+              Chat on WhatsApp
+            </a>
+            .
+          </p>
         </div>
       </div>
       <div

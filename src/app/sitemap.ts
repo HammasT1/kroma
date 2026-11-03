@@ -6,7 +6,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const shoes = await productRepository.list();
   return [
     { url: absoluteUrl("/"), changeFrequency: "weekly", priority: 1 },
-    ...["/about", "/faq", "/shipping"].map((path) => ({
+    ...["/about", "/faq", "/shipping", "/privacy", "/terms", "/refund-policy"].map((path) => ({
       url: absoluteUrl(path),
       changeFrequency: "yearly" as const,
       priority: 0.4,

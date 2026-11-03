@@ -1,6 +1,7 @@
 "use client";
 
 import type { Shoe } from "@/data";
+import { SizeGuide } from "./SizeGuide";
 
 export function SizeSelector({
   shoe,
@@ -22,6 +23,7 @@ export function SizeSelector({
             Pick a size first
           </span>
         )}
+        <SizeGuide current={value} />
       </legend>
       <div className="flex flex-wrap gap-2">
         {shoe.sizes.map((size) => {
