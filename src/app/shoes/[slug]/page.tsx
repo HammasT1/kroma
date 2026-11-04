@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { productRepository } from "@/data";
 import { ProductDetail } from "@/features/product/ProductDetail";
+import { RecentlyViewed, TrackView } from "@/features/product/RecentlyViewed";
 import { RelatedRow } from "@/features/product/RelatedRow";
 import { cssVars } from "@/lib/theme";
 import { absoluteUrl, productJsonLd, shoePath } from "@/lib/seo";
@@ -55,7 +56,9 @@ export default async function ShoePage({ params }: Params) {
         }}
       />
       <ProductDetail shoe={shoe} themeIndex={themeIndex} />
+      <TrackView shoeId={shoe.id} />
       <RelatedRow shoes={related} />
+      <RecentlyViewed shoes={all} excludeId={shoe.id} />
     </main>
   );
 }
