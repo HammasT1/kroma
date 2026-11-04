@@ -166,6 +166,12 @@ export function Slip({ order }: { order: Order }) {
               <span>Subtotal</span>
               <span>{formatPrecise(order.subtotal, order.currency)}</span>
             </p>
+            {order.discount > 0 && (
+              <p className={row}>
+                <span>Discount ({order.promoCode})</span>
+                <span>-{formatPrecise(order.discount, order.currency)}</span>
+              </p>
+            )}
             <p className={row}>
               <span>Shipping</span>
               <span>{order.shipping ? formatPrecise(order.shipping, order.currency) : "Free"}</span>

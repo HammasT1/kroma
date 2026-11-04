@@ -7,8 +7,10 @@ import { TransitionLink } from "@/components/ui/TransitionLink";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { getLenis } from "@/lib/lenis";
 import { formatPrice } from "@/lib/format";
+import { findPromo, promoDiscount } from "@/lib/promo";
 import { SITE } from "@/lib/site";
 import { useUiStore } from "@/lib/uiStore";
+import { PromoField } from "./PromoField";
 import { MAX_QTY, selectCount, selectSubtotal, useCartStore, type CartLine } from "./cartStore";
 
 const FOCUSABLE =
@@ -20,6 +22,8 @@ export function CartDrawer() {
   const lines = useCartStore((s) => s.lines);
   const count = useCartStore(selectCount);
   const subtotal = useCartStore(selectSubtotal);
+  const promo = findPromo(useCartStore((s) => s.promo));
+  const discount = promoDiscount(promo, subtotal);
   const reduced = useReducedMotion();
   const panel = useRef<HTMLDivElement>(null);
   const opener = useRef<HTMLElement | null>(null);
@@ -133,13 +137,26 @@ export function CartDrawer() {
             {lines.length > 0 && (
               <footer className="border-t border-white/15 px-5 py-5">
                 <FreeShippingBar subtotal={subtotal} currency={lines[0].currency} />
+                <PromoField />
+                {discount > 0 && promo && (
+                  <p className="mb-1 flex justify-between text-sm">
+                    <span>Discount ({promo.code})</span>
+                    <span className="tabular-nums">
+                      -{formatPrice(discount, lines[0].currency)}
+                    </span>
+                  </p>
+                )}
                 <p className="flex items-baseline justify-between text-lg">
                   <span>Subtotal</span>
                   <strong className="font-display text-4xl tabular-nums">
-                    <AnimatedPrice value={subtotal} currency={lines[0].currency} />
+                    <AnimatedPrice value={subtotal - discount} currency={lines[0].currency} />
                   </strong>
                 </p>
-                <p className="mt-1 text-sm opacity-70">Shipping and taxes at checkout.</p>
+                <p className="mt-1 text-sm opacity-70">
+                  {promo?.freeShipping
+                    ? "Free shipping applied."
+                    : "Shipping and taxes at checkout."}
+                </p>
                 <TransitionLink
                   href="/checkout"
                   onClick={() => setOpen(false)}

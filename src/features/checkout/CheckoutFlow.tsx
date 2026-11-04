@@ -8,6 +8,7 @@ import { selectSubtotal, useCartStore } from "@/features/cart/cartStore";
 import { useCartHydrated } from "@/features/cart/useCartHydrated";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { formatPrice } from "@/lib/format";
+import { findPromo, promoDiscount } from "@/lib/promo";
 import { SITE } from "@/lib/site";
 import { PaymentDeck } from "./PaymentDeck";
 import { Slip } from "./Slip";
@@ -23,6 +24,8 @@ const field =
 const pill =
   "inline-flex h-12 w-fit items-center rounded-full bg-accent px-8 text-sm font-bold tracking-widest text-on-accent uppercase";
 
+const newOrderId = () => `KR-${Math.floor(100000 + Math.random() * 900000)}`;
+
 /** Demo checkout: delivery details, then a payment-card deck that flips open, then a printed order slip. */
 export function CheckoutFlow() {
   const hydrated = useCartHydrated();
@@ -30,13 +33,16 @@ export function CheckoutFlow() {
   const lines = useCartStore((s) => s.lines);
   const subtotal = useCartStore(selectSubtotal);
   const clear = useCartStore((s) => s.clear);
+  const promo = findPromo(useCartStore((s) => s.promo));
   const [step, setStep] = useState<Step>("Delivery");
   const [details, setDetails] = useState<Details | null>(null);
   const [order, setOrder] = useState<Order | null>(null);
 
   const currency = lines[0]?.currency ?? "USD";
-  const shipping = subtotal === 0 || subtotal >= FREE_SHIPPING_OVER ? 0 : SHIPPING;
-  const total = subtotal + shipping;
+  const discount = promoDiscount(promo, subtotal);
+  const shipping =
+    subtotal === 0 || promo?.freeShipping || subtotal >= FREE_SHIPPING_OVER ? 0 : SHIPPING;
+  const total = subtotal - discount + shipping;
 
   const toPayment = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -55,10 +61,12 @@ export function CheckoutFlow() {
   const onPaid = (payment: PaidInfo) => {
     if (!details) return;
     setOrder({
-      id: `KR-${Math.floor(100000 + Math.random() * 900000)}`,
+      id: newOrderId(),
       placedAt: new Date().toISOString(),
       lines: lines.map((l) => ({ ...l })),
       subtotal,
+      discount,
+      promoCode: promo?.code ?? null,
       shipping,
       total,
       currency,
@@ -118,6 +126,12 @@ export function CheckoutFlow() {
       <dl className="mt-6 grid grid-cols-[1fr_auto] gap-2 border-t border-white/20 pt-4 text-sm">
         <dt>Subtotal</dt>
         <dd className="tabular-nums">{formatPrice(subtotal, currency)}</dd>
+        {discount > 0 && promo && (
+          <>
+            <dt>Discount ({promo.code})</dt>
+            <dd className="tabular-nums">-{formatPrice(discount, currency)}</dd>
+          </>
+        )}
         <dt>Shipping</dt>
         <dd className="tabular-nums">{shipping ? formatPrice(shipping, currency) : "Free"}</dd>
         <dt className="text-base font-bold">Total</dt>

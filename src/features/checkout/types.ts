@@ -22,6 +22,8 @@ export interface Order {
   placedAt: string;
   lines: CartLine[];
   subtotal: number;
+  discount: number;
+  promoCode: string | null;
   shipping: number;
   total: number;
   currency: string;

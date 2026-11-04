@@ -20,10 +20,13 @@ type NewLine = Omit<CartLine, "key" | "qty">;
 
 interface CartState {
   lines: CartLine[];
+  /** applied promo code, validated against lib/promo */
+  promo: string | null;
   add: (line: NewLine, qty?: number) => void;
   setQty: (key: string, qty: number) => void;
   remove: (key: string) => void;
   clear: () => void;
+  setPromo: (code: string | null) => void;
 }
 
 export const MAX_QTY = 10;
@@ -32,6 +35,7 @@ export const useCartStore = create<CartState>()(
   persist(
     (set) => ({
       lines: [],
+      promo: null,
       add: (line, qty = 1) =>
         set((s) => {
           const key = `${line.shoeId}-${line.size}`;
@@ -52,7 +56,8 @@ export const useCartStore = create<CartState>()(
             .filter((l) => l.qty > 0),
         })),
       remove: (key) => set((s) => ({ lines: s.lines.filter((l) => l.key !== key) })),
-      clear: () => set({ lines: [] }),
+      clear: () => set({ lines: [], promo: null }),
+      setPromo: (promo) => set({ promo }),
     }),
     // hydrated manually after mount (CartButton) so SSR markup matches
     { name: "kroma-cart", skipHydration: true, version: 1 },
