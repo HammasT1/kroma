@@ -43,7 +43,8 @@
 - **Product pages** with size picker, sold-out sizes and low-stock label
 - **Size guide** modal (EU / UK / US / foot length) and how-to-measure steps
 - **Filters and sort:** category, size, price band, price and name
-- **Bag drawer** with a free-shipping progress bar
+- **Bag drawer** with a free-shipping progress bar and **promo codes** (`WELCOME10`, `SNEAKER15`, `FREESHIP`)
+- **Recently viewed** row on the home and product pages
 - **Wishlist**, command-style **search** (`/` or `Ctrl/Cmd+K`)
 - **Checkout flow** with a payment-card deck and printable order slip
 - **Trust badges** and a **floating WhatsApp** chat button
@@ -101,6 +102,8 @@ Contact details, social links and the free-shipping threshold live in one file, 
 | `social`                       | Footer links and Google business data                                     |
 | `freeShippingOver`             | Cart progress bar and checkout shipping cost                              |
 
+Promo codes are listed in [`src/lib/promo.ts`](src/lib/promo.ts). Each has a `code`, a label and either `percent` or `freeShipping`. They are checked in the browser, so treat them as demo codes until validation moves to a backend.
+
 Header links are in `src/components/ui/Nav.tsx` and footer columns in `src/components/ui/Footer.tsx`.
 
 ## 👟 Adding shoes
@@ -156,14 +159,14 @@ src/features/
   hero/             Showcase (pinned stage), ShoeImage (<picture>)
   theme/            themeStore + useShoeTheme, ColorWipe, Cursor, NoiseOverlay
   catalog/          HorizontalGallery, ProductGrid (filters + sort), ProductCard
-  product/          ProductDetail, SizeSelector, SizeGuide, RelatedRow, sharedElement, flyToCart
-  cart/             cartStore (persisted), CartDrawer (+ free-shipping bar)
+  product/          ProductDetail, SizeSelector, SizeGuide, RelatedRow, RecentlyViewed (+ recentStore), sharedElement, flyToCart
+  cart/             cartStore (persisted), CartDrawer (+ free-shipping bar), PromoField
   checkout/         CheckoutFlow, PaymentDeck, Slip
   search/ wishlist/ command search and saved pairs
-src/components/ui/  Nav, Footer, Newsletter, WhatsAppButton, LegalDoc, PageShell, Preloader, ...
+src/components/ui/  Nav, Footer, Newsletter, MotionToggle, WhatsAppButton, LegalDoc, PageShell, Preloader, ...
 src/app/            routes: /, /shoes/[slug], /checkout, /wishlist, /about, /faq, /shipping,
                     /privacy, /terms, /refund-policy, plus icon, sitemap, robots
-src/lib/            site (business details), gsap, lenis, color (WCAG), theme, seo, env, format
+src/lib/            site (business details), promo (discount codes), gsap, lenis, color (WCAG), theme, seo, env, format
 ```
 
 <details>
@@ -181,7 +184,7 @@ src/lib/            site (business details), gsap, lenis, color (WCAG), theme, s
 
 ## ♿ Accessibility and motion
 
-`prefers-reduced-motion` turns off smooth scroll, pinned timing, tilt, magnetic pull, the cursor and the color wipe. Keyboard users get arrow keys on the hero, radio sizes, focus traps with `Esc` in the bag and size guide, a skip link and a labelled mobile menu. Palettes are checked for WCAG AA at build time.
+`prefers-reduced-motion` turns off smooth scroll, pinned timing, tilt, magnetic pull, the cursor and the color wipe. The footer's **Reduce motion** switch does the same for visitors whose device does not ask for it. The choice is saved in the browser and applied before first paint. Keyboard users get arrow keys on the hero, radio sizes, focus traps with `Esc` in the bag and size guide, a skip link and a labelled mobile menu. Palettes are checked for WCAG AA at build time.
 
 ## 📈 Going live
 
