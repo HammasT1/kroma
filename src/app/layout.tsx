@@ -61,6 +61,9 @@ const orgJsonLd = {
   sameAs: Object.values(SITE.social),
 };
 
+// Runs before first paint so the saved "reduce motion" choice is on <html> before any animation code reads it.
+const MOTION_SCRIPT = `try{if(localStorage.getItem("kroma-motion")==="reduced")document.documentElement.dataset.motion="reduced"}catch(e){}`;
+
 export const viewport: Viewport = { themeColor: "#0e0e10", width: "device-width", initialScale: 1 };
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
@@ -79,8 +82,9 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     aspect: s.image.aspect,
   }));
   return (
-    <html lang="en" className={`${display.variable} ${body.variable}`}>
+    <html lang="en" className={`${display.variable} ${body.variable}`} suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: MOTION_SCRIPT }} />
         <style
           id="theme-default"
           dangerouslySetInnerHTML={{ __html: `:root{${cssVars(palettes[0])}}` }}

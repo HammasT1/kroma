@@ -1,5 +1,6 @@
 import { env } from "@/lib/env";
 import { SITE, whatsappLink } from "@/lib/site";
+import { MotionToggle } from "./MotionToggle";
 import { Newsletter } from "./Newsletter";
 import { TransitionLink } from "./TransitionLink";
 
@@ -130,6 +131,7 @@ export function Footer() {
           <p>
             © {new Date().getFullYear()} {name}. Demo storefront, all product names are fictional.
           </p>
+          <MotionToggle />
           <p className="tracking-[0.18em] uppercase">Visa · Mastercard · Apple Pay · COD</p>
         </div>
       </div>

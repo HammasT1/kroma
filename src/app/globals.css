@@ -72,6 +72,15 @@ html.lenis body {
   }
 }
 
+html[data-motion="reduced"] *,
+html[data-motion="reduced"] *::before,
+html[data-motion="reduced"] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
 /* Custom cursor (fine pointers only; Cursor.tsx toggles the class) */
 html.has-cursor,
 html.has-cursor * {
